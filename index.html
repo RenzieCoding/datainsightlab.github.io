@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renzie's Data Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="robots" content="noindex">
+</head>
+
+<body>
+
+<header>
+  <div class="profile">
+    <img src="https://picsum.photos/120" class="profile-pic">
+
+    <div>
+      <h1>Renzie Reyes</h1>
+      <p class="bio">
+        Power BI • Power Query • SQL • Automation
+      </p>
+
+      <a class="resume-btn" href="#">
+        Resume
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="intro">
+  <h2>Project Feed</h2>
+  <p>
+    Interactive walkthroughs, dashboard demos, and automation showcases.
+  </p>
+</section>
+
+<div class="tabs">
+  <button class="tab-button active" type="button" data-tab="work">Work</button>
+  <button class="tab-button" type="button" data-tab="life">Life outside Work</button>
+</div>
+
+<div class="tab-contents">
+  <section class="hobbies tab-content" data-tab-content="life">
+    <h2>Life Outside Work</h2>
+    <p>
+      When I'm not building data solutions, I recharge with creative hobbies and active adventures.
+    </p>
+
+    <div class="hobby-grid">
+      <div class="hobby-card">
+        <strong>Photography</strong>
+        <p>Capturing moments and visual stories through travel and city photography.</p>
+      </div>
+      <div class="hobby-card">
+        <strong>Travel</strong>
+        <p>Exploring new places, cultures, and local data communities around the world.</p>
+      </div>
+      <div class="hobby-card">
+        <strong>Fitness</strong>
+        <p>Staying active with cycling, hiking, and morning workouts to keep energy high.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="feed tab-content active" data-tab-content="work">
+
+  <div class="card">
+    <div class="user">
+      <img src="https://picsum.photos/50" class="avatar">
+      <span>powerbi_project</span>
+    </div>
+
+    <div class="video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/jNQXAC9IVRw"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="actions">
+      ▶ Dashboard Walkthrough
+    </div>
+
+    <div class="caption">
+      <strong>Power BI Automation</strong><br>
+      Consolidated SharePoint Excel files into an automated reporting workflow.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="user">
+      <img src="https://picsum.photos/51" class="avatar">
+      <span>sql_analysis</span>
+    </div>
+
+    <button class="image-btn" type="button">
+      <img class="post-image" src="https://picsum.photos/500/700" alt="Customer Spend Analysis">
+      <span class="zoom-label">Click to enlarge</span>
+    </button>
+
+    <div class="actions">
+      📊 SQL Insight
+    </div>
+
+    <div class="caption">
+      <strong>Customer Spend Analysis</strong><br>
+      Exploratory SQL analysis using the Chinook database.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="user">
+      <img src="https://picsum.photos/52" class="avatar">
+      <span>powerquery_demo</span>
+    </div>
+
+    <div class="video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/jNQXAC9IVRw"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="actions">
+      ⚡ Power Query
+    </div>
+
+    <div class="caption">
+      <strong>Data Transformation Demo</strong><br>
+      Automated messy Excel cleanup using Power Query transformations.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="user">
+      <img src="https://picsum.photos/53" class="avatar">
+      <span>dash_design</span>
+    </div>
+
+    <div class="video-wrapper">
+      <iframe 
+        src="https://www.youtube.com/embed/3fumBcKC6RE"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="actions">
+      🎨 Dashboard Design
+    </div>
+
+    <div class="caption">
+      <strong>Interactive KPI Dashboard</strong><br>
+      Clean visualization design for executive insights.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="user">
+      <img src="https://picsum.photos/54" class="avatar">
+      <span>data_viz</span>
+    </div>
+
+    <button class="image-btn" type="button">
+      <img class="post-image" src="https://picsum.photos/500/500" alt="Sales Trend Visualization">
+      <span class="zoom-label">Click to enlarge</span>
+    </button>
+
+    <div class="actions">
+      📈 Sales Trends
+    </div>
+
+    <div class="caption">
+      <strong>Sales Trend Snapshot</strong><br>
+      Visual representation of monthly growth and product performance.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="user">
+      <img src="https://picsum.photos/55" class="avatar">
+      <span>reporting_lab</span>
+    </div>
+
+    <button class="image-btn" type="button">
+      <img class="post-image" src="https://picsum.photos/500/600" alt="Automation Report Preview">
+      <span class="zoom-label">Click to enlarge</span>
+    </button>
+
+    <div class="actions">
+      ⚙️ Automation Report
+    </div>
+
+    <div class="caption">
+      <strong>Report Automation Preview</strong><br>
+      Example output from an automated reporting workflow.
+    </div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  Built with HTML, CSS, GitHub, and Vercel.
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" type="button" aria-label="Close"></button>
+  <img class="lightbox-image" src="" alt="Enlarged project image">
+</div>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = lightbox.querySelector('.lightbox-image');
+
+  document.querySelectorAll('.image-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const source = button.querySelector('img').src;
+      lightboxImage.src = source;
+      lightbox.classList.add('active');
+      lightbox.setAttribute('aria-hidden', 'false');
+    });
+  });
+
+  lightbox.addEventListener('click', event => {
+    if (event.target === lightbox || event.target.classList.contains('lightbox-close')) {
+      lightbox.classList.remove('active');
+      lightboxImage.src = '';
+      lightbox.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && lightbox.classList.contains('active')) {
+      lightbox.classList.remove('active');
+      lightboxImage.src = '';
+      lightbox.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const target = button.dataset.tab;
+      tabButtons.forEach(btn => btn.classList.toggle('active', btn === button));
+      tabContents.forEach(content => {
+        content.classList.toggle('active', content.dataset.tabContent === target);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
