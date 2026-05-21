@@ -62,8 +62,6 @@
                 allowfullscreen></iframe>
             </div>
           </div>
-          <button class="short-prev" aria-label="Previous short">‹</button>
-          <button class="short-next" aria-label="Next short">›</button>
         </div>
       </div>
 
@@ -283,27 +281,15 @@
     });
   });
 
-  // Shorts carousel behaviour (top of page). Supports arrows, keyboard and touch swipe.
+  // Shorts carousel behaviour (gesture-only): touch + mouse-drag
   const shortsTrack = document.querySelector('.shorts-track');
   if (shortsTrack) {
     const items = Array.from(shortsTrack.querySelectorAll('.short-item'));
     let current = 0;
-    const prevBtn = document.querySelector('.short-prev');
-    const nextBtn = document.querySelector('.short-next');
 
     function updateShorts() {
       shortsTrack.style.transform = `translateX(-${current * 100}%)`;
     }
-
-    prevBtn.addEventListener('click', () => {
-      current = (current - 1 + items.length) % items.length;
-      updateShorts();
-    });
-
-    nextBtn.addEventListener('click', () => {
-      current = (current + 1) % items.length;
-      updateShorts();
-    });
 
     // Touch swipe
     let startX = null;
@@ -323,10 +309,23 @@
       deltaX = 0; startX = null; updateShorts();
     });
 
-    // Keyboard navigation
-    document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') prevBtn.click();
-      if (e.key === 'ArrowRight') nextBtn.click();
+    // Mouse drag (desktop gesture)
+    let isDown = false;
+    shortsTrack.addEventListener('mousedown', e => { isDown = true; startX = e.clientX; shortsTrack.classList.add('grabbing'); });
+    document.addEventListener('mousemove', e => {
+      if (!isDown || startX === null) return;
+      deltaX = e.clientX - startX;
+      const percent = (deltaX / shortsTrack.clientWidth) * 100;
+      shortsTrack.style.transform = `translateX(${ -current*100 + percent }%)`;
+    });
+    document.addEventListener('mouseup', () => {
+      if (!isDown) return;
+      isDown = false; shortsTrack.classList.remove('grabbing');
+      if (Math.abs(deltaX) > shortsTrack.clientWidth * 0.25) {
+        if (deltaX < 0) current = (current + 1) % items.length;
+        else current = (current - 1 + items.length) % items.length;
+      }
+      deltaX = 0; startX = null; updateShorts();
     });
 
     updateShorts();

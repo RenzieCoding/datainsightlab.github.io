@@ -387,28 +387,11 @@ header{
   border:0;
   display:block;
 }
-.short-prev, .short-next{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  background:rgba(0,0,0,0.45);
-  color:#fff;
-  border:none;
-  width:44px;
-  height:44px;
-  border-radius:999px;
-  cursor:pointer;
-  font-size:22px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.short-prev{ left:8px; }
-.short-next{ right:8px; }
+.shorts-track{ cursor:grab; }
+.shorts-track.grabbing{ cursor:grabbing; }
 
 @media (max-width:520px){
   .shorts-viewport{ width:100vw; max-width:420px; border-radius:0; }
-  .short-prev, .short-next{ width:40px; height:40px; }
 }
 
 .actions{
