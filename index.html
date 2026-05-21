@@ -35,26 +35,6 @@
   </p>
 </section>
 
-<!-- Shorts carousel (placed at the top for quick access). Add more .short-item blocks to scale. -->
-<section class="shorts-top">
-  <div class="shorts-viewport" aria-label="Shorts carousel">
-    <div class="shorts-track">
-      <div class="short-item" data-video-id="RJfKdBq7B3A">
-        <iframe src="https://www.youtube.com/embed/RJfKdBq7B3A"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-      <div class="short-item" data-video-id="Ot-4EJQ77tM">
-        <iframe src="https://www.youtube.com/embed/Ot-4EJQ77tM"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-    </div>
-    <button class="short-prev" aria-label="Previous short">‹</button>
-    <button class="short-next" aria-label="Next short">›</button>
-  </div>
-</section>
-
 <div class="tabs">
   <button class="tab-button active" type="button" data-tab="work">Work</button>
   <button class="tab-button" type="button" data-tab="life">Life outside Work</button>
@@ -67,7 +47,27 @@
       When I'm not building data solutions, I recharge with creative hobbies and active adventures.
     </p>
 
-    <div class="feed">
+      <!-- Shorts carousel (only visible in this Life tab). Add more .short-item blocks to scale. -->
+      <div class="shorts-top">
+        <div class="shorts-viewport" aria-label="Shorts carousel">
+          <div class="shorts-track">
+            <div class="short-item" data-video-id="RJfKdBq7B3A">
+              <iframe src="https://www.youtube.com/embed/shorts/RJfKdBq7B3A"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+            <div class="short-item" data-video-id="Ot-4EJQ77tM">
+              <iframe src="https://www.youtube.com/embed/shorts/Ot-4EJQ77tM"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+          </div>
+          <button class="short-prev" aria-label="Previous short">‹</button>
+          <button class="short-next" aria-label="Next short">›</button>
+        </div>
+      </div>
+
+      <div class="feed">
       <div class="card">
         <div class="user">
           <img src="https://picsum.photos/50" class="avatar">
@@ -282,6 +282,55 @@
       });
     });
   });
+
+  // Shorts carousel behaviour (top of page). Supports arrows, keyboard and touch swipe.
+  const shortsTrack = document.querySelector('.shorts-track');
+  if (shortsTrack) {
+    const items = Array.from(shortsTrack.querySelectorAll('.short-item'));
+    let current = 0;
+    const prevBtn = document.querySelector('.short-prev');
+    const nextBtn = document.querySelector('.short-next');
+
+    function updateShorts() {
+      shortsTrack.style.transform = `translateX(-${current * 100}%)`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      current = (current - 1 + items.length) % items.length;
+      updateShorts();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      current = (current + 1) % items.length;
+      updateShorts();
+    });
+
+    // Touch swipe
+    let startX = null;
+    let deltaX = 0;
+    shortsTrack.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+    shortsTrack.addEventListener('touchmove', e => {
+      if (startX === null) return;
+      deltaX = e.touches[0].clientX - startX;
+      const percent = (deltaX / shortsTrack.clientWidth) * 100;
+      shortsTrack.style.transform = `translateX(${ -current*100 + percent }%)`;
+    });
+    shortsTrack.addEventListener('touchend', () => {
+      if (Math.abs(deltaX) > shortsTrack.clientWidth * 0.25) {
+        if (deltaX < 0) current = (current + 1) % items.length;
+        else current = (current - 1 + items.length) % items.length;
+      }
+      deltaX = 0; startX = null; updateShorts();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') prevBtn.click();
+      if (e.key === 'ArrowRight') nextBtn.click();
+    });
+
+    updateShorts();
+  }
 </script>
 
 </body>
