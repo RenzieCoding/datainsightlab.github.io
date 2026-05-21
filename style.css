@@ -438,6 +438,27 @@ header{
   transform:scale(1.15);
 }
 
+.short-play{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:4;
+  width:64px;
+  height:64px;
+  border-radius:999px;
+  border:none;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  font-size:26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.short-play.hidden{ display:none; }
+
 @media (max-width:420px){
   .short-prev, .short-next{ width:36px; height:36px; font-size:18px; }
 }
