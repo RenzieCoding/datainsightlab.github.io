@@ -414,9 +414,16 @@ header{
 }
 .short-prev{ left:8px; }
 .short-next{ right:8px; }
+
+.shorts-dots{
+  display:flex;
+  justify-content:center;
   gap:10px;
-  padding-top:14px;
+  margin-top:12px;
+  padding-bottom:6px;
+  position:relative;
 }
+
 .shorts-dot{
   width:10px;
   height:10px;
