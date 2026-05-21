@@ -67,6 +67,7 @@
                 allowfullscreen></iframe>
             </div>
           </div>
+          <div class="shorts-overlay" aria-hidden="true"></div>
         </div>
         <div class="shorts-dots" aria-hidden="true"></div>
       </div>
@@ -290,10 +291,12 @@
     });
   });
 
-  // Shorts carousel behaviour (gesture-only): touch + mouse-drag
+  // Shorts carousel behaviour (gesture-only): touch + mouse-drag via overlay
   const shortsTrack = document.querySelector('.shorts-track');
   const shortsViewport = document.querySelector('.shorts-viewport');
-  if (shortsTrack && shortsViewport) {
+  const shortsOverlay = document.querySelector('.shorts-overlay');
+  const shortsDots = document.querySelector('.shorts-dots');
+  if (shortsTrack && shortsViewport && shortsOverlay) {
     const items = Array.from(shortsTrack.querySelectorAll('.short-item'));
     let current = 0;
 
@@ -303,49 +306,93 @@
 
     function updateShorts() {
       shortsTrack.style.transform = `translateX(-${current * 100}%)`;
+      setActiveDot();
     }
 
-    refreshShortsLayout = function() {
+    function refreshShortsLayout() {
       updateShorts();
-    };
+    }
 
-    // Touch swipe
+    function setActiveDot() {
+      if (!shortsDots) return;
+      shortsDots.querySelectorAll('.shorts-dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === current);
+      });
+    }
+
+    function createDots() {
+      if (!shortsDots) return;
+      shortsDots.innerHTML = items.map((item, index) => `
+        <button type="button" class="shorts-dot" data-index="${index}" aria-label="Show short ${index + 1}"></button>
+      `).join('');
+      shortsDots.querySelectorAll('.shorts-dot').forEach(dot => {
+        dot.addEventListener('click', () => {
+          current = Number(dot.dataset.index);
+          updateShorts();
+        });
+      });
+    }
+
+    createDots();
+    setActiveDot();
+
     let startX = null;
     let deltaX = 0;
-    shortsTrack.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
-    shortsTrack.addEventListener('touchmove', e => {
+    let isDown = false;
+
+    shortsOverlay.addEventListener('touchstart', e => {
+      if (e.touches.length !== 1) return;
+      startX = e.touches[0].clientX;
+      deltaX = 0;
+    });
+
+    shortsOverlay.addEventListener('touchmove', e => {
       if (startX === null) return;
       deltaX = e.touches[0].clientX - startX;
       const percent = (deltaX / getViewportWidth()) * 100;
       shortsTrack.style.transform = `translateX(${ -current*100 + percent }%)`;
     });
-    shortsTrack.addEventListener('touchend', () => {
+
+    shortsOverlay.addEventListener('touchend', () => {
       const width = getViewportWidth();
-      if (Math.abs(deltaX) > width * 0.25) {
-        if (deltaX < 0) current = (current + 1) % items.length;
-        else current = (current - 1 + items.length) % items.length;
+      if (Math.abs(deltaX) > width * 0.2) {
+        current = deltaX < 0
+          ? (current + 1) % items.length
+          : (current - 1 + items.length) % items.length;
       }
-      deltaX = 0; startX = null; updateShorts();
+      deltaX = 0;
+      startX = null;
+      updateShorts();
     });
 
-    // Mouse drag (desktop gesture)
-    let isDown = false;
-    shortsTrack.addEventListener('mousedown', e => { isDown = true; startX = e.clientX; shortsTrack.classList.add('grabbing'); });
+    shortsOverlay.addEventListener('mousedown', e => {
+      isDown = true;
+      startX = e.clientX;
+      deltaX = 0;
+      shortsOverlay.classList.add('grabbing');
+      e.preventDefault();
+    });
+
     document.addEventListener('mousemove', e => {
       if (!isDown || startX === null) return;
       deltaX = e.clientX - startX;
       const percent = (deltaX / getViewportWidth()) * 100;
       shortsTrack.style.transform = `translateX(${ -current*100 + percent }%)`;
     });
+
     document.addEventListener('mouseup', () => {
       if (!isDown) return;
-      isDown = false; shortsTrack.classList.remove('grabbing');
+      isDown = false;
+      shortsOverlay.classList.remove('grabbing');
       const width = getViewportWidth();
-      if (Math.abs(deltaX) > width * 0.25) {
-        if (deltaX < 0) current = (current + 1) % items.length;
-        else current = (current - 1 + items.length) % items.length;
+      if (Math.abs(deltaX) > width * 0.2) {
+        current = deltaX < 0
+          ? (current + 1) % items.length
+          : (current - 1 + items.length) % items.length;
       }
-      deltaX = 0; startX = null; updateShorts();
+      deltaX = 0;
+      startX = null;
+      updateShorts();
     });
 
     window.addEventListener('resize', refreshShortsLayout);
