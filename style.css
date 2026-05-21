@@ -363,11 +363,13 @@ header{
 }
 .shorts-viewport{
   position:relative;
-  width:clamp(280px, 36vw, 420px);
+  width:100%;
+  max-width:460px;
   aspect-ratio:9/16;
   overflow:hidden;
   border-radius:12px;
   background:#000;
+  margin:0 auto;
 }
 .shorts-track{
   display:flex;
