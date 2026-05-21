@@ -165,7 +165,7 @@ header{
   margin:auto;
   padding:20px;
   display:grid !important;
-  grid-template-columns:repeat(3, minmax(280px, 1fr)) !important;
+  grid-template-columns:1fr !important;
   grid-auto-rows:auto;
   gap:24px;
 }
