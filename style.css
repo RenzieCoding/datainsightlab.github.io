@@ -31,8 +31,8 @@ header{
 }
 
 .profile-pic{
-  width:110px;
-  height:110px;
+  width:150px;
+  height:150px;
   border-radius:50%;
 }
 
@@ -221,8 +221,8 @@ header{
   }
 
   .profile-pic {
-    width:90px;
-    height:90px;
+    width:120px;
+    height:120px;
     margin:0 auto;
   }
 
