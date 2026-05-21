@@ -68,6 +68,8 @@
             </div>
           </div>
           <div class="shorts-overlay" aria-hidden="true"></div>
+          <button class="short-prev" aria-label="Previous short">‹</button>
+          <button class="short-next" aria-label="Next short">›</button>
         </div>
         <div class="shorts-dots" aria-hidden="true"></div>
       </div>
@@ -335,6 +337,12 @@
 
     createDots();
     setActiveDot();
+
+    // Arrow button handlers (also allow non-gesture navigation)
+    const prevBtn = document.querySelector('.short-prev');
+    const nextBtn = document.querySelector('.short-next');
+    if (prevBtn) prevBtn.addEventListener('click', () => { current = (current - 1 + items.length) % items.length; updateShorts(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { current = (current + 1) % items.length; updateShorts(); });
 
     let startX = null;
     let deltaX = 0;

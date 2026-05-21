@@ -395,6 +395,25 @@ header{
    cursor:grab;
  }
  .shorts-overlay.grabbing{ cursor:grabbing; }
+.short-prev, .short-next{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  border:none;
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:3;
+}
+.short-prev{ left:8px; }
+.short-next{ right:8px; }
   gap:10px;
   padding-top:14px;
 }
@@ -410,6 +429,10 @@ header{
 .shorts-dot.active{
   background:#fff;
   transform:scale(1.15);
+}
+
+@media (max-width:420px){
+  .short-prev, .short-next{ width:36px; height:36px; font-size:18px; }
 }
 
 @media (max-width:520px){
