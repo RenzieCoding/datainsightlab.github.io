@@ -356,7 +356,8 @@ header{
 /* Shorts carousel at top: vertical 9:16 items and simple carousel controls */
 .shorts-top{
   display:flex;
-  justify-content:center;
+  flex-direction:column;
+  align-items:center;
   padding:18px 12px;
   background:#090909;
   border-bottom:1px solid #222;
@@ -364,67 +365,67 @@ header{
 .shorts-viewport{
   position:relative;
   width:100%;
-   max-width:300px;
-   aspect-ratio:9/16;
-   overflow:hidden;
-   border-radius:12px;
-   background:#000;
-   margin:0 auto;
- }
- .shorts-track{
-   display:flex;
-   height:100%;
-   transition:transform 0.35s ease;
-   will-change:transform;
- }
- .short-item{
-   flex:0 0 100%;
-   height:100%;
- }
- .short-item iframe{
-   width:100%;
-   height:100%;
-   border:0;
-   display:block;
- }
- .shorts-overlay{
-   position:absolute;
-   inset:0;
-   z-index:2;
-   touch-action: pan-y;
-   cursor:grab;
- }
- .shorts-overlay.grabbing{ cursor:grabbing; }
-.short-prev, .short-next{
+  max-width:300px;
+  aspect-ratio:9/16;
+  overflow:hidden;
+  border-radius:12px;
+  background:#000;
+  margin:0 auto;
+}
+.shorts-track{
+  display:flex;
+  height:100%;
+  transition:transform 0.35s ease;
+  will-change:transform;
+}
+.short-item{
+  flex:0 0 100%;
+  height:100%;
+}
+.short-item iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+.shorts-overlay{
   position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  background:rgba(0,0,0,0.5);
+  inset:0;
+  z-index:2;
+  touch-action: pan-y;
+  cursor:grab;
+}
+.shorts-overlay.grabbing{ cursor:grabbing; }
+.shorts-controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  max-width:300px;
+  margin-top:14px;
+}
+.short-nav{
+  background:rgba(255,255,255,0.08);
   color:#fff;
   border:none;
   width:40px;
   height:40px;
   border-radius:999px;
   cursor:pointer;
-  font-size:20px;
+  font-size:22px;
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:3;
+  transition:background 0.2s ease;
 }
-.short-prev{ left:8px; }
-.short-next{ right:8px; }
-
+.short-nav:hover{
+  background:rgba(255,255,255,0.16);
+}
 .shorts-dots{
-  position:absolute;
-  left:50%;
-  bottom:10px;
-  transform:translateX(-50%);
   display:flex;
   justify-content:center;
   gap:10px;
-  z-index:3;
-  pointer-events:auto;
 }
 
 .shorts-dot{
@@ -463,7 +464,7 @@ header{
 .short-play.hidden{ display:none; }
 
 @media (max-width:420px){
-  .short-prev, .short-next{ width:36px; height:36px; font-size:18px; }
+  .short-nav { width:36px; height:36px; font-size:18px; }
 }
 
 @media (max-width:520px){

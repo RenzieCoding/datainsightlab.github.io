@@ -69,7 +69,11 @@
           </div>
           <div class="shorts-overlay" aria-hidden="false"></div>
           <button class="short-play" aria-label="Play or pause current short">▶</button>
+        </div>
+        <div class="shorts-controls">
+          <button type="button" class="short-nav short-prev" aria-label="Previous short">‹</button>
           <div class="shorts-dots"></div>
+          <button type="button" class="short-nav short-next" aria-label="Next short">›</button>
         </div>
       </div>
       <div class="feed">
@@ -374,6 +378,25 @@
           players[current] = true;
           setPlayButton(true);
         }
+      });
+    }
+
+    const prevBtn = document.querySelector('.short-prev');
+    const nextBtn = document.querySelector('.short-next');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        current = (current - 1 + items.length) % items.length;
+        pauseAll();
+        updateShorts();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        current = (current + 1) % items.length;
+        pauseAll();
+        updateShorts();
       });
     }
 
