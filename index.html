@@ -338,19 +338,15 @@
     createDots();
     setActiveDot();
 
-    // Arrow button handlers (also allow non-gesture navigation)
-    const prevBtn = document.querySelector('.short-prev');
-    const nextBtn = document.querySelector('.short-next');
-    if (prevBtn) prevBtn.addEventListener('click', () => { current = (current - 1 + items.length) % items.length; updateShorts(); });
-    if (nextBtn) nextBtn.addEventListener('click', () => { current = (current + 1) % items.length; updateShorts(); });
-
     let startX = null;
+    let startTime = 0;
     let deltaX = 0;
     let isDown = false;
 
     shortsOverlay.addEventListener('touchstart', e => {
       if (e.touches.length !== 1) return;
       startX = e.touches[0].clientX;
+      startTime = Date.now();
       deltaX = 0;
     });
 
@@ -363,19 +359,28 @@
 
     shortsOverlay.addEventListener('touchend', () => {
       const width = getViewportWidth();
+      const duration = Date.now() - startTime;
+      // treat as swipe if moved enough, otherwise as tap
       if (Math.abs(deltaX) > width * 0.2) {
         current = deltaX < 0
           ? (current + 1) % items.length
           : (current - 1 + items.length) % items.length;
+        updateShorts();
+      } else if (Math.abs(deltaX) < 8 && duration < 300) {
+        // tap: send play command to current iframe using postMessage (YouTube JS API must be enabled)
+        const iframe = items[current].querySelector('iframe');
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+        }
       }
       deltaX = 0;
       startX = null;
-      updateShorts();
     });
 
     shortsOverlay.addEventListener('mousedown', e => {
       isDown = true;
       startX = e.clientX;
+      startTime = Date.now();
       deltaX = 0;
       shortsOverlay.classList.add('grabbing');
       e.preventDefault();
@@ -393,14 +398,21 @@
       isDown = false;
       shortsOverlay.classList.remove('grabbing');
       const width = getViewportWidth();
+      const duration = Date.now() - startTime;
       if (Math.abs(deltaX) > width * 0.2) {
         current = deltaX < 0
           ? (current + 1) % items.length
           : (current - 1 + items.length) % items.length;
+        updateShorts();
+      } else if (Math.abs(deltaX) < 8 && duration < 300) {
+        // mouse click/tap: play video
+        const iframe = items[current].querySelector('iframe');
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+        }
       }
       deltaX = 0;
       startX = null;
-      updateShorts();
     });
 
     window.addEventListener('resize', refreshShortsLayout);
