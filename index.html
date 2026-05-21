@@ -274,6 +274,7 @@
 
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
+  let refreshShortsLayout = null;
 
   tabButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -282,18 +283,30 @@
       tabContents.forEach(content => {
         content.classList.toggle('active', content.dataset.tabContent === target);
       });
+      if (target === 'life' && typeof refreshShortsLayout === 'function') {
+        refreshShortsLayout();
+      }
     });
   });
 
   // Shorts carousel behaviour (gesture-only): touch + mouse-drag
   const shortsTrack = document.querySelector('.shorts-track');
-  if (shortsTrack) {
+  const shortsViewport = document.querySelector('.shorts-viewport');
+  if (shortsTrack && shortsViewport) {
     const items = Array.from(shortsTrack.querySelectorAll('.short-item'));
     let current = 0;
+
+    function getViewportWidth() {
+      return shortsViewport.clientWidth || shortsViewport.getBoundingClientRect().width || 1;
+    }
 
     function updateShorts() {
       shortsTrack.style.transform = `translateX(-${current * 100}%)`;
     }
+
+    refreshShortsLayout = function() {
+      updateShorts();
+    };
 
     // Touch swipe
     let startX = null;
@@ -302,11 +315,12 @@
     shortsTrack.addEventListener('touchmove', e => {
       if (startX === null) return;
       deltaX = e.touches[0].clientX - startX;
-      const percent = (deltaX / shortsTrack.clientWidth) * 100;
+      const percent = (deltaX / getViewportWidth()) * 100;
       shortsTrack.style.transform = `translateX(${ -current*100 + percent }%)`;
     });
     shortsTrack.addEventListener('touchend', () => {
-      if (Math.abs(deltaX) > shortsTrack.clientWidth * 0.25) {
+      const width = getViewportWidth();
+      if (Math.abs(deltaX) > width * 0.25) {
         if (deltaX < 0) current = (current + 1) % items.length;
         else current = (current - 1 + items.length) % items.length;
       }
@@ -319,19 +333,21 @@
     document.addEventListener('mousemove', e => {
       if (!isDown || startX === null) return;
       deltaX = e.clientX - startX;
-      const percent = (deltaX / shortsTrack.clientWidth) * 100;
+      const percent = (deltaX / getViewportWidth()) * 100;
       shortsTrack.style.transform = `translateX(${ -current*100 + percent }%)`;
     });
     document.addEventListener('mouseup', () => {
       if (!isDown) return;
       isDown = false; shortsTrack.classList.remove('grabbing');
-      if (Math.abs(deltaX) > shortsTrack.clientWidth * 0.25) {
+      const width = getViewportWidth();
+      if (Math.abs(deltaX) > width * 0.25) {
         if (deltaX < 0) current = (current + 1) % items.length;
         else current = (current - 1 + items.length) % items.length;
       }
       deltaX = 0; startX = null; updateShorts();
     });
 
+    window.addEventListener('resize', refreshShortsLayout);
     updateShorts();
   }
 </script>
